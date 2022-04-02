@@ -1,0 +1,17 @@
+string: string
+text: string
+integer: number
+enum: number
+bigint: number
+float: number
+decimal: number
+json: Record<string, any>
+jsonb: Record<string, any>
+binary: string
+boolean: boolean
+date: string
+datetime: string
+timestamp: string
+inet: string
+cidr: string
+macaddr: string
