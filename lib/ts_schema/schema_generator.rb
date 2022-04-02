@@ -5,7 +5,7 @@ module TsSchema
     def initialize
       Rails.application.eager_load!
       @models = ApplicationRecord.send(:subclasses)
-			@models << TsSchema.configuration.additional_models unless TsSchema.configuration.additional_models.empty?
+			@models.merge(TsSchema.configuration.additional_models) unless TsSchema.configuration.additional_models.empty?
       @types = TsSchema.configuration.types.merge(TsSchema.configuration.custom_types || {})
     end
 
