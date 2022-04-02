@@ -9,6 +9,28 @@ TsSchema.setup do |config|
   # config.auto_generate = true
 
   # Add custom type mappings or overrides
+	#
+	# Default type mappings:
+	#
+	# string:                 string
+	# text:                   string
+	# integer:                number
+	# enum:                   number
+	# bigint:                 number
+	# float:                  number
+	# decimal:                number
+	# json:                   Record<string, any>
+	# jsonb:                  Record<string, any>
+	# binary:                 string
+	# boolean:                boolean
+	# date:                   string
+	# datetime:               string
+	# timestamp:              string
+	# datetime_with_timezone: string
+	# inet:                   string
+	# cidr:                   string
+	# macaddr:                string
+	#
   # config.custom_types = {
   #   
   # }
@@ -18,6 +40,11 @@ TsSchema.setup do |config|
 
   # Whether to generate types for associations
   # config.include_associated = true
+
+	# Additional models to map which don't have a model file
+	# config.additional_models = [
+	#	
+	# ]
 
   # Namespace
   # config.namespace = :schema

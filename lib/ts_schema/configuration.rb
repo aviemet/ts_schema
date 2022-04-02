@@ -13,6 +13,7 @@ module TsSchema
       namespace: :schema,
       indent: :tab,
       spaces: 2,
+			additional_models: []
     }
 
     attr_accessor(*DEFAULTS.keys)

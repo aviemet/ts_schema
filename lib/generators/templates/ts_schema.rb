@@ -41,6 +41,11 @@ TsSchema.setup do |config|
   # Whether to generate types for associations
   # config.include_associated = true
 
+	# Additional models to map which don't have a model file
+	# config.additional_models = [
+	#	
+	# ]
+
   # Namespace
   # config.namespace = :schema
 

@@ -5,6 +5,7 @@ module TsSchema
     def initialize
       Rails.application.eager_load!
       @models = ApplicationRecord.send(:subclasses)
+			@models << TsSchema.configuration.additional_models unless TsSchema.configuration.additional_models.empty?
       @types = TsSchema.configuration.types.merge(TsSchema.configuration.custom_types || {})
     end
 
@@ -33,7 +34,7 @@ module TsSchema
         columns.concat(map_associations(model)) if TsSchema.configuration.include_associated
         
         type_template += <<~TYPESCRIPT
-          interface #{model.model_name.name} {
+          interface #{model.model_name.param_key.camelize} {
           #{columns.map { |column| "#{indent_as_str}#{column_name_cased(column[:name])}: #{column[:ts_type]};" }.join("\n")}
           }\n
         TYPESCRIPT
