@@ -1,3 +1,5 @@
+require "rake"
+
 namespace :ts_schema do
 	desc "Generates a schema file in the default javascripts location, or the location specified in the ts_config initializer options"
 	task :generate do

@@ -19,3 +19,5 @@ module TsSchema
     end
   end
 end
+
+require "generators/install_generator"

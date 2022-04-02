@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails/generators'
 require 'rails/generators/base'
-require 'securerandom'
 
 module TsSchema
   module Generators
@@ -13,10 +13,6 @@ module TsSchema
       def copy_initializer
         template "ts_schema.rb", "config/initializers/ts_schema.rb"
       end
-
-      # def show_readme
-      #   readme "README" if behavior == :invoke
-      # end
     end
   end
 end
