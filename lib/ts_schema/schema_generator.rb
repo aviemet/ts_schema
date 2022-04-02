@@ -67,12 +67,12 @@ module TsSchema
         when association.has_one? || association.belongs_to?
           {
             name: "#{association.name}?",
-            ts_type: association.class_name
+            ts_type: association.class_name.constantize.model_name.param_key.camelize
           }
         when association.collection?
           {
             name: "#{association.name}?",
-            ts_type: "#{association.class_name}[]"
+            ts_type: "#{association.class_name.constantize.model_name.param_key.camelize}[]"
           }
         end
       end
