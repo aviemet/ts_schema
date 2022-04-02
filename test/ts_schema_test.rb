@@ -16,7 +16,7 @@ class TsSchemaTest < ActiveSupport::TestCase
 		path = TsSchema.configuration.output
 		File.delete(path) if File.exist?(path)
 
-		TsSchema.generate
+		TsSchema.output_file
 		assert File.exist?(path)
 	end
 	

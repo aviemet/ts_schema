@@ -17,7 +17,12 @@ module TsSchema
     def generate
       SchemaGenerator.new.generate
     end
+
+		def output_file
+			SchemaGenerator.new.output_file
+		end
   end
 end
 
 require "generators/install_generator"
+require "generators/generate_generator"

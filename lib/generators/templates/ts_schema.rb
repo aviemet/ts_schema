@@ -9,6 +9,28 @@ TsSchema.setup do |config|
   # config.auto_generate = true
 
   # Add custom type mappings or overrides
+	#
+	# Default type mappings:
+	#
+	# string:                 string
+	# text:                   string
+	# integer:                number
+	# enum:                   number
+	# bigint:                 number
+	# float:                  number
+	# decimal:                number
+	# json:                   Record<string, any>
+	# jsonb:                  Record<string, any>
+	# binary:                 string
+	# boolean:                boolean
+	# date:                   string
+	# datetime:               string
+	# timestamp:              string
+	# datetime_with_timezone: string
+	# inet:                   string
+	# cidr:                   string
+	# macaddr:                string
+	#
   # config.custom_types = {
   #   
   # }

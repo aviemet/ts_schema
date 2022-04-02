@@ -9,8 +9,19 @@ module TsSchema
     end
 
     def generate
-      ts = generate_typescript
-      output_file(ts)
+      generate_typescript
+    end
+
+    def output_file
+      path = TsSchema.configuration.output
+      FileUtils.mkdir_p(File.dirname(path))
+
+			content = generate
+      return if File.exist?(path) && File.read(path) == content
+
+      File.open(path, 'w') do |f|
+        f.write content
+      end
     end
 
     private
@@ -74,17 +85,6 @@ module TsSchema
         name.camelize
       else
         name
-      end
-    end
-
-    def output_file(content)
-      path = TsSchema.configuration.output
-      FileUtils.mkdir_p(File.dirname(path))
-
-      return if File.exist?(path) && File.read(path) == content
-
-      File.open(path, 'w') do |f|
-        f.write content
       end
     end
 

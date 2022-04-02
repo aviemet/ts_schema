@@ -12,7 +12,7 @@ boolean: boolean
 date: string
 datetime: string
 timestamp: string
-datetime_with_timezone: :string
+datetime_with_timezone: string
 inet: string
 cidr: string
 macaddr: string
