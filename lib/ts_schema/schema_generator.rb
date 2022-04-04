@@ -5,7 +5,9 @@ module TsSchema
     def initialize
       Rails.application.eager_load!
       @models = ApplicationRecord.send(:subclasses)
-			@models.concat(TsSchema.configuration.additional_models) unless TsSchema.configuration.additional_models.empty?
+			unless TsSchema.configuration.additional_models.empty?
+				@models.concat(TsSchema.configuration.additional_models.map {|m| m.to_s.constantize })
+			end
       @types = TsSchema.configuration.types.merge(TsSchema.configuration.custom_types || {})
     end
 
