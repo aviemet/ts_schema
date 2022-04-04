@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ts_schema (0.1.4)
+    ts_schema (0.1.8)
       rails (~> 7.0, >= 7.0.2.3)
 
 GEM
