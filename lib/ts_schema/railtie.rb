@@ -1,5 +1,4 @@
 require "rails"
-require "ts_schema"
 
 module TsSchema
   class Railtie < ::Rails::Railtie

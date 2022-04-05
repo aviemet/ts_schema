@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     ts_schema (0.1.10)
+      rails (>= 6.0.0)
       railties (>= 4)
 
 GEM
@@ -157,7 +158,6 @@ PLATFORMS
 
 DEPENDENCIES
   pg
-  rails (>= 6.0.0)
   ts_schema!
 
 BUNDLED WITH
