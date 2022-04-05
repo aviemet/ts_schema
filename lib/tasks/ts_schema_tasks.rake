@@ -11,10 +11,13 @@ end
 namespace :db do
   def auto_generate_and_save_file
     TsSchema.output_file if TsSchema.configuration.auto_generate
-    puts "generated"
   end
 
   task :migrate do
+    at_exit { auto_generate_and_save_file }
+  end
+
+  task :setup do
     at_exit { auto_generate_and_save_file }
   end
 end
