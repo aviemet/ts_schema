@@ -17,6 +17,8 @@ Gem::Specification.new do |spec|
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir["lib/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
+  spec.require_paths = ["lib"]
 
   spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_runtime_dependency(%q<railties>, [">= 4"])
 end
