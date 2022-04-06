@@ -25,14 +25,6 @@ declare namespace schema {
 		fives?: Five[];
 	}
 
-	interface Two {
-		id: number;
-		exampleId: number;
-		createdAt: string;
-		updatedAt: string;
-		example?: Example;
-	}
-
 	interface Five {
 		id: number;
 		createdAt: string;
@@ -50,6 +42,15 @@ declare namespace schema {
 		three?: Three;
 	}
 
+	interface One {
+		id: number;
+		exampleId: number;
+		createdAt: string;
+		updatedAt: string;
+		example?: Example;
+		two?: Two;
+	}
+
 	interface Three {
 		id: number;
 		createdAt: string;
@@ -58,13 +59,64 @@ declare namespace schema {
 		examples?: Example[];
 	}
 
-	interface One {
+	interface Two {
 		id: number;
 		exampleId: number;
 		createdAt: string;
 		updatedAt: string;
 		example?: Example;
+	}
+
+	interface Inherit {
+		id: number;
+		colString: string;
+		colText: string;
+		colInteger: number;
+		colEnum: 'zero' | 'one' | 'two';
+		colBigint: number;
+		colFloat: number;
+		colDecimal: number;
+		colJson?: Record<string, any> | null;
+		colJsonb?: Record<string, any> | null;
+		colBinary?: string | null;
+		colBoolean?: boolean | null;
+		colDate?: string | null;
+		colDatetime?: string | null;
+		colTimestamp?: string | null;
+		colInet?: string | null;
+		colCidr?: string | null;
+		colMacaddr?: string | null;
+		one?: One;
 		two?: Two;
+		fours?: Four[];
+		threes?: Three[];
+		fives?: Five[];
+	}
+
+	interface Deep {
+		id: number;
+		colString: string;
+		colText: string;
+		colInteger: number;
+		colEnum: 'zero' | 'one' | 'two';
+		colBigint: number;
+		colFloat: number;
+		colDecimal: number;
+		colJson?: Record<string, any> | null;
+		colJsonb?: Record<string, any> | null;
+		colBinary?: string | null;
+		colBoolean?: boolean | null;
+		colDate?: string | null;
+		colDatetime?: string | null;
+		colTimestamp?: string | null;
+		colInet?: string | null;
+		colCidr?: string | null;
+		colMacaddr?: string | null;
+		one?: One;
+		two?: Two;
+		fours?: Four[];
+		threes?: Three[];
+		fives?: Five[];
 	}
 
 
