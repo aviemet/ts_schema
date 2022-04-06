@@ -1,0 +1,2 @@
+class Deep < Inherit
+end

@@ -2,13 +2,31 @@ require 'fileutils'
 
 module TsSchema
   class SchemaGenerator
-    def initialize
+    attr_accessor :config
+    attr_accessor :models
+
+    def initialize(config = nil)
+      @config = config || TsSchema::Configuration.new
+
       Rails.application.eager_load!
-      @models = ApplicationRecord.send(:subclasses)
-			unless TsSchema.configuration.additional_models.empty?
-				@models.concat(TsSchema.configuration.additional_models.map {|m| m.to_s.constantize })
-			end
-      @types = TsSchema.configuration.types.merge(TsSchema.configuration.custom_types || {})
+      # @models = ApplicationRecord.send(:subclasses)
+      @models = get_subclasses(ApplicationRecord)
+      unless @config.additional_models.empty?
+        @models.concat(@config.additional_models.map do |m| 
+          m.to_s.constantize
+        end)
+      end
+      @types = @config.types.stringify_keys.merge(@config.custom_types.stringify_keys || {})
+    end
+
+    def get_subclasses(model)
+      models = model.send(:subclasses)
+      unless nested_empty?(models)
+        models.concat(models.flat_map do |m|
+          get_subclasses(m)
+        end)
+      end
+      models
     end
 
     def generate
@@ -16,10 +34,10 @@ module TsSchema
     end
 
     def output_file
-      path = TsSchema.configuration.output
+      path = @config.output
       FileUtils.mkdir_p(File.dirname(path))
 
-			content = generate
+      content = generate
       return if File.exist?(path) && File.read(path) == content
 
       File.open(path, 'w') do |f|
@@ -27,13 +45,11 @@ module TsSchema
       end
     end
 
-    private
-
     def generate_typescript
       type_template = ""
       @models.each do |model|
         columns = map_column_types(model)
-        columns.concat(map_associations(model)) if TsSchema.configuration.include_associated
+        columns.concat(map_associations(model)) if @config.include_associated
         
         type_template += <<~TYPESCRIPT
           interface #{model.model_name.param_key.camelize} {
@@ -42,7 +58,7 @@ module TsSchema
         TYPESCRIPT
       end
       type_template = <<~TPL
-        declare namespace #{TsSchema.configuration.namespace} {
+        declare namespace #{@config.namespace} {
         #{indent_wrapper(type_template)}
         }
       TPL
@@ -50,7 +66,7 @@ module TsSchema
 
     def map_column_types(model)
       model.columns.map { |i|
-        type = @types[i.type.to_s] || TsSchema.configuration.default_type
+        type = @types[i.type.to_s] || @config.default_type
 
         if(enum = model.defined_enums[i.name])
           type = enum.keys.map { |k| "'#{k}'" }.join(" | ")
@@ -80,8 +96,14 @@ module TsSchema
       end
     end
 
+    private
+
+    def nested_empty?(arr)
+      arr.is_a?(Array) && arr.flatten.empty?
+    end
+
     def column_name_cased(name)
-      case TsSchema.configuration.case.to_sym
+      case @config.case.to_sym
       when :camel
         name.camelize(:lower)
       when :pascal
@@ -92,18 +114,18 @@ module TsSchema
     end
 
     def indent_as_str
-      case TsSchema.configuration.indent.to_sym
+      case @config.indent.to_sym
       when :space || :spaces
-        "".rjust(TsSchema.configuration.spaces, " ")
+        "".rjust(@config.spaces, " ")
       else
         "\t"
       end
     end
 
     def indent_wrapper(str)
-      case TsSchema.configuration.indent.to_sym
+      case @config.indent.to_sym
       when :space || :spaces
-        str.indent(TsSchema.configuration.spaces)
+        str.indent(@config.spaces)
       else
         str.indent(1, "\t")
       end

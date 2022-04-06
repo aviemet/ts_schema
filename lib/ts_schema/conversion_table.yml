@@ -2,7 +2,6 @@ string: string
 text: string
 integer: number
 enum: number
-bigint: number
 float: number
 decimal: number
 json: Record<string, any>
@@ -12,7 +11,6 @@ boolean: boolean
 date: string
 datetime: string
 timestamp: string
-datetime_with_timezone: string
 inet: string
 cidr: string
 macaddr: string

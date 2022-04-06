@@ -1,0 +1,3 @@
+class Inherit < Example
+
+end

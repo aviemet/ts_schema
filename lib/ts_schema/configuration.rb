@@ -37,6 +37,5 @@ module TsSchema
       end
       self
     end
-
   end
 end
