@@ -11,8 +11,10 @@ module TsSchema
       default_type: :string,
       include_associated: true,
       namespace: :schema,
+			schema_type: :interface,
       indent: :tab,
       spaces: 2,
+			parent_classes: ["ApplicationRecord"],
 			additional_models: []
     }
 

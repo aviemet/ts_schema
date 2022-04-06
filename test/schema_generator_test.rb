@@ -9,7 +9,7 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
       {:name=>"col_string", :ts_type=>"string"},
       {:name=>"col_text", :ts_type=>"string"},
       {:name=>"col_integer", :ts_type=>"number"},
-      {:name=>"col_enum", :ts_type=>"'zero' | 'one' | 'two'"},
+      {:name=>"col_enum", :ts_type=>"'zero'|'one'|'two'"},
       {:name=>"col_bigint", :ts_type=>"number"},
       {:name=>"col_float", :ts_type=>"number"},
       {:name=>"col_decimal", :ts_type=>"number"},
@@ -51,4 +51,18 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
     generator = TsSchema::SchemaGenerator.new(config)
     assert_includes(generator.models.map(&:name), "Base")
   end
+
+	test "it generates schema as type when the option is set" do
+    config = TsSchema::Configuration.new({schema_type: :type})
+    generator = TsSchema::SchemaGenerator.new(config)
+		assert_match "type Example = {", generator.generate
+		refute_match "interface Example {", generator.generate
+	end
+
+	test "it outputs a namespace from the option" do
+    config = TsSchema::Configuration.new({namespace: "different"})
+    generator = TsSchema::SchemaGenerator.new(config)
+		assert_match "namespace different", generator.generate
+		refute_match "namespace schema", generator.generate
+	end
 end

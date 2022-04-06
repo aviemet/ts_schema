@@ -4,7 +4,7 @@ declare namespace schema {
 		colString: string;
 		colText: string;
 		colInteger: number;
-		colEnum: 'zero' | 'one' | 'two';
+		colEnum: 'zero'|'one'|'two';
 		colBigint: number;
 		colFloat: number;
 		colDecimal: number;
@@ -72,7 +72,7 @@ declare namespace schema {
 		colString: string;
 		colText: string;
 		colInteger: number;
-		colEnum: 'zero' | 'one' | 'two';
+		colEnum: 'zero'|'one'|'two';
 		colBigint: number;
 		colFloat: number;
 		colDecimal: number;
@@ -98,7 +98,7 @@ declare namespace schema {
 		colString: string;
 		colText: string;
 		colInteger: number;
-		colEnum: 'zero' | 'one' | 'two';
+		colEnum: 'zero'|'one'|'two';
 		colBigint: number;
 		colFloat: number;
 		colDecimal: number;

@@ -10,6 +10,8 @@ class TsSchemaTest < ActiveSupport::TestCase
 		assert TsSchema.configuration.default_type
 		assert TsSchema.configuration.include_associated
 		assert TsSchema.configuration.namespace
+		assert TsSchema.configuration.schema_type
+		assert TsSchema.configuration.parent_classes
 	end
 
 	test "it generates a schema file" do

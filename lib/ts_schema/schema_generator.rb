@@ -7,10 +7,12 @@ module TsSchema
 
     def initialize(config = nil)
       @config = config || TsSchema::Configuration.new
+			@models = []
 
       Rails.application.eager_load!
-      # @models = ApplicationRecord.send(:subclasses)
-      @models = get_subclasses(ApplicationRecord)
+			@config.parent_classes.each do |parent|
+				@models.concat(get_subclasses(parent.to_s.constantize))
+			end
       unless @config.additional_models.empty?
         @models.concat(@config.additional_models.map do |m| 
           m.to_s.constantize
@@ -30,7 +32,24 @@ module TsSchema
     end
 
     def generate
-      generate_typescript
+      type_template = ""
+			
+      @models.each do |model|
+        columns = map_column_types(model)
+        columns.concat(map_associations(model)) if @config.include_associated
+        
+        type_template += <<~TYPESCRIPT
+          #{@config.schema_type} #{model.model_name.param_key.camelize} #{@config.schema_type.to_sym == :type ? "= " : ""}{
+          #{columns.map { |column| "#{indent_as_str}#{column_name_cased(column[:name])}: #{column[:ts_type]};" }.join("\n")}
+          }\n
+        TYPESCRIPT
+      end
+
+      type_template = <<~TPL
+        declare namespace #{@config.namespace} {
+        #{indent_wrapper(type_template)}
+        }
+      TPL
     end
 
     def output_file
@@ -45,31 +64,12 @@ module TsSchema
       end
     end
 
-    def generate_typescript
-      type_template = ""
-      @models.each do |model|
-        columns = map_column_types(model)
-        columns.concat(map_associations(model)) if @config.include_associated
-        
-        type_template += <<~TYPESCRIPT
-          interface #{model.model_name.param_key.camelize} {
-          #{columns.map { |column| "#{indent_as_str}#{column_name_cased(column[:name])}: #{column[:ts_type]};" }.join("\n")}
-          }\n
-        TYPESCRIPT
-      end
-      type_template = <<~TPL
-        declare namespace #{@config.namespace} {
-        #{indent_wrapper(type_template)}
-        }
-      TPL
-    end
-
     def map_column_types(model)
       model.columns.map { |i|
         type = @types[i.type.to_s] || @config.default_type
 
         if(enum = model.defined_enums[i.name])
-          type = enum.keys.map { |k| "'#{k}'" }.join(" | ")
+          type = enum.keys.map { |k| "'#{k}'" }.join("|")
         end
     
         {
