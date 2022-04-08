@@ -7,6 +7,7 @@ module TsSchema
 
     def initialize(config = nil)
       @config = config || TsSchema::Configuration.new
+      @config.field_overrides = @config.field_overrides.stringify_keys
 			@models = []
 
       Rails.application.eager_load!
@@ -66,17 +67,34 @@ module TsSchema
 
     def map_column_types(model)
       model.columns.map { |i|
-        type = @types[i.type.to_s] || @config.default_type
+        next if @config.field_overrides[i.name.to_s] == :omit
 
-        if(enum = model.defined_enums[i.name])
+        type = @types[i.type.to_s] || @config.default_type
+        name = map_name(i.name)
+        null = i.null
+        null = true if @config.field_overrides[name]&.to_s == "optional"
+
+        if(enum = model.defined_enums[name])
           type = enum.keys.map { |k| "'#{k}'" }.join("|")
         end
-    
+
         {
-          name: "#{i.name}#{"?" if i.null }",
-          ts_type: "#{type}#{" | null" if i.null}"
+          name: "#{name}#{"?" if null }",
+          ts_type: "#{type}#{" | null" if null}"
         }
-      }
+      }.compact
+    end
+
+    def map_name(name)
+      final_name = name.to_s
+      return final_name unless @config.field_overrides[final_name]
+
+      if @config.field_overrides[final_name]&.to_s != "optional"
+        final_name = @config.field_overrides[final_name]&.to_s
+
+        final_name = map_name(final_name) if @config.field_overrides[final_name]
+      end
+      final_name
     end
 
     def map_associations(model)

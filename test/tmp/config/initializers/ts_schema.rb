@@ -61,11 +61,24 @@ TsSchema.setup do |config|
 
 
   # Additional models to generate schema from, such as those added by other gems 
-  #  which don't have a model file. 
+  #  which don't have a model file. (as strings or symbols)
   #
   # config.additional_models = [
   #	
   # ]
+
+
+  # Ignore certain fields, omitting them from the generated schema: :optional|(string)|false
+  # Key is the name of the field to override options for.
+  # [:optional] will make this an optional field by adding '?' to the defintion (example: password?: string)
+  # [(string)]  enter a field name override, for instance rename encrypted_password to password
+  #   In that scenario, also specifying passwoord as an optional field will append a ? in the output
+  # [:omit]     will omit the field from being output in the schema entirely
+  #
+  # config.field_overrides: {
+  #   encrypted_password: :password,
+  #   password: :optional,
+  # }
 
 
   # Namespace for generated types

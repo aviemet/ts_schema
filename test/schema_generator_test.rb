@@ -32,11 +32,13 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
     config = TsSchema::Configuration.new({custom_types: { integer: :string }})
     generator = TsSchema::SchemaGenerator.new(config)
     map = generator.map_column_types(One)
+
     assert_includes(map, { name: "example_id", ts_type: "string" })
   end
 
   test "it includes all subclasses of ApplicationRecord" do
     generator = TsSchema::SchemaGenerator.new
+
     assert_includes(generator.models.map(&:name), "Inherit")
     assert_includes(generator.models.map(&:name), "Deep")
   end
@@ -49,6 +51,7 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
   test "it includes models defined in additional_models config" do
     config = TsSchema::Configuration.new({additional_models: ["Base"]})
     generator = TsSchema::SchemaGenerator.new(config)
+
     assert_includes(generator.models.map(&:name), "Base")
   end
 
@@ -62,7 +65,27 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
 	test "it outputs a namespace from the option" do
     config = TsSchema::Configuration.new({namespace: "different"})
     generator = TsSchema::SchemaGenerator.new(config)
+
 		assert_match "namespace different", generator.generate
 		refute_match "namespace schema", generator.generate
 	end
+
+  test "it respects field naming overrides" do
+    config = TsSchema::Configuration.new({field_overrides: {
+      "encrypted_password" => :password,
+      "password" => :optional,
+      "omit" => :omit,
+      "deep" => "nesting",
+      "nesting" => "level",
+    }})
+    generator = TsSchema::SchemaGenerator.new(config)
+    map = generator.map_column_types(Override)
+    
+    assert_includes map, {name: "password?", ts_type: "string | null"}
+    refute_includes map, {name: "encrypted_password", ts_type: "string"}
+    refute_includes map, {name: "omit?", ts_type: "string | null"}
+    refute_includes map, {name: "deep?", ts_type: "string | null"}
+    refute_includes map, {name: "nesting?", ts_type: "string | null"}
+    assert_includes map, {name: "level?", ts_type: "string | null"}
+  end
 end

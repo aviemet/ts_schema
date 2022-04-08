@@ -25,6 +25,23 @@ declare namespace schema {
 		fives?: Five[];
 	}
 
+	interface Override {
+		id: number;
+		password?: string | null;
+		omit?: string | null;
+		deep?: string | null;
+		createdAt: string;
+		updatedAt: string;
+	}
+
+	interface Two {
+		id: number;
+		exampleId: number;
+		createdAt: string;
+		updatedAt: string;
+		example?: Example;
+	}
+
 	interface Five {
 		id: number;
 		createdAt: string;
@@ -42,15 +59,6 @@ declare namespace schema {
 		three?: Three;
 	}
 
-	interface One {
-		id: number;
-		exampleId: number;
-		createdAt: string;
-		updatedAt: string;
-		example?: Example;
-		two?: Two;
-	}
-
 	interface Three {
 		id: number;
 		createdAt: string;
@@ -59,12 +67,13 @@ declare namespace schema {
 		examples?: Example[];
 	}
 
-	interface Two {
+	interface One {
 		id: number;
 		exampleId: number;
 		createdAt: string;
 		updatedAt: string;
 		example?: Example;
+		two?: Two;
 	}
 
 	interface Inherit {

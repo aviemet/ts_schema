@@ -10,12 +10,16 @@ module TsSchema
       custom_types: {},
       default_type: :string,
       include_associated: true,
+      parent_classes: ["ApplicationRecord"],
+      additional_models: [],
+      field_overrides: {
+        "encrypted_password" => :password,
+        "password" => :optional,
+      },
       namespace: :schema,
-			schema_type: :interface,
+      schema_type: :interface,
       indent: :tab,
       spaces: 2,
-			parent_classes: ["ApplicationRecord"],
-			additional_models: []
     }
 
     attr_accessor(*DEFAULTS.keys)

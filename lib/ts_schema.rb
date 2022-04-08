@@ -34,4 +34,3 @@ module TsSchema
 end
 
 require "generators/install_generator"
-require "generators/generate_generator"
