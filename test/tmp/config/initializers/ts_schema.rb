@@ -1,26 +1,5 @@
-# Default type mappings:
-#
-# string:                 string
-# text:                   string
-# integer:                number
-# enum:                   number
-# bigint:                 number
-# float:                  number
-# decimal:                number
-# json:                   Record<string, any>
-# jsonb:                  Record<string, any>
-# binary:                 string
-# boolean:                boolean
-# date:                   string
-# datetime:               string
-# timestamp:              string
-# datetime_with_timezone: string
-# inet:                   string
-# cidr:                   string
-# macaddr:                string
-
 TsSchema.setup do |config|
-  # Case options: camel|snake|pascal
+  # Case options for field names: camel|snake|pascal
   #
   # config.case = :camel
 
@@ -35,7 +14,27 @@ TsSchema.setup do |config|
   # config.auto_generate = true
 
 
-  # Add custom type mappings or overrides
+  # Add custom type mappings or overrides (as strings or symbols)
+  #
+  # Default type mappings:
+  #   string:                 string
+  #   text:                   string
+  #   integer:                number
+  #   enum:                   number
+  #   bigint:                 number
+  #   float:                  number
+  #   decimal:                number
+  #   json:                   Record<string, any>
+  #   jsonb:                  Record<string, any>
+  #   binary:                 string
+  #   boolean:                boolean
+  #   date:                   string
+  #   datetime:               string
+  #   timestamp:              string
+  #   datetime_with_timezone: string
+  #   inet:                   string
+  #   cidr:                   string
+  #   macaddr:                string
   #
   # config.custom_types = {
   #   
@@ -70,9 +69,10 @@ TsSchema.setup do |config|
 
   # Ignore certain fields, omitting them from the generated schema: :optional|(string)|false
   # Key is the name of the field to override options for.
+  #
   # [:optional] will make this an optional field by adding '?' to the defintion (example: password?: string)
   # [(string)]  enter a field name override, for instance rename encrypted_password to password
-  #   In that scenario, also specifying passwoord as an optional field will append a ? in the output
+  #             In that scenario, also specifying password as an optional field will append a ? to password
   # [:omit]     will omit the field from being output in the schema entirely
   #
   # config.field_overrides: {

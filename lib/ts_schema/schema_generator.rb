@@ -19,6 +19,8 @@ module TsSchema
           m.to_s.constantize
         end)
       end
+      @models.sort_by! { |c| c.name }
+
       @types = @config.types.stringify_keys.merge(@config.custom_types.stringify_keys || {})
     end
 
@@ -34,7 +36,7 @@ module TsSchema
 
     def generate
       type_template = ""
-			
+
       @models.each do |model|
         columns = map_column_types(model)
         columns.concat(map_associations(model)) if @config.include_associated
