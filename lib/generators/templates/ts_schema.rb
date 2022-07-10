@@ -80,6 +80,14 @@ TsSchema.setup do |config|
   #   password: :optional,
   # }
 
+  # Override types for fields by field name. This is globally applied.
+  # Useful for polymorphic associations which would otherwise be of type string, e.g.:
+  #   commentable_type: "'Product'|'Review'" 
+
+  # config.field_type_overrides: {
+
+  # }
+
 
   # Namespace for generated types
   #

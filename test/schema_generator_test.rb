@@ -88,4 +88,14 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
     refute_includes map, {name: "nesting?", ts_type: "string | null"}
     assert_includes map, {name: "level?", ts_type: "string | null"}
   end
+
+  test "it respect field name type overrides" do
+    config = TsSchema::Configuration.new({field_type_overrides: {
+      "deep" => "'option1'|'option2'"
+    }})
+    generator = TsSchema::SchemaGenerator.new(config)
+    map = generator.map_column_types(Override)
+
+    assert_includes map, {name: "deep?", ts_type: "'option1'|'option2' | null"}
+  end
 end

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ts_schema (0.1.13)
+    ts_schema (0.1.14)
       rails (>= 6.0.0)
       railties (>= 4)
 
@@ -107,8 +107,6 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.6-x86_64-darwin)
-      racc (~> 1.4)
     nokogiri (1.13.6-x86_64-linux)
       racc (~> 1.4)
     pg (1.4.1)

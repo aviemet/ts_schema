@@ -16,6 +16,7 @@ module TsSchema
         "encrypted_password" => :password,
         "password" => :optional,
       },
+      field_type_overrides: {},
       namespace: :schema,
       schema_type: :interface,
       indent: :tab,

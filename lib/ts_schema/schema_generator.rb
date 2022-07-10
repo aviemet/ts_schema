@@ -8,6 +8,7 @@ module TsSchema
     def initialize(config = nil)
       @config = config || TsSchema::Configuration.new
       @config.field_overrides = @config.field_overrides.stringify_keys
+      @config.field_type_overrides = @config.field_type_overrides.stringify_keys
 			@models = []
 
       Rails.application.eager_load!
@@ -68,12 +69,15 @@ module TsSchema
     end
 
     def map_column_types(model)
-      model.columns.map { |i|
-        next if @config.field_overrides[i.name.to_s] == :omit
+      model.columns.map { |column|
+        column_name = column.name.to_s
+        next if @config.field_overrides[column_name] == :omit
 
-        type = @types[i.type.to_s] || @config.default_type
-        name = map_name(i.name)
-        null = i.null
+        type_override = config.field_type_overrides[column_name]
+                 
+        type = type_override ? type_override : @types[column.type.to_s] || @config.default_type
+        name = map_name(column.name)
+        null = column.null
         null = true if @config.field_overrides[name]&.to_s == "optional"
 
         if(enum = model.defined_enums[name])
