@@ -62,6 +62,7 @@ rails ts_schema:generate
 |parent_classes    |`["ApplicationRecord"]`|Array of string names of top level classes|Any class names included in this array will be querried for subclasses to generate types for|
 |additional_models |`[]`|Array of string names of ActiveRecord models|Add model names which don't inherit from classes included in `parent_classes`, but which should have types generated|
 |field_overrides   |`{ encrypted_password: :password,  password: :optional, }`|Hash of field names with the following values:<br/> `:optional`: Makes it an optional field by adding '?' to the defintion (example: password?: string)<br/>`:omit`: Omits the field from being output in the schema entirely<br/>`[string]`: Field name override. Will replace any instance of the hash key with the value. The default values replace `password` with `encrypted_password`|Overwrite, omit, or make optional any field name. Applies to all generated classes|
+|field_type_overrides|`{}`|`{ field_name: 'typescriptType' }`|Override all instances of a field name in any record with the supplied type. Useful for polymorphic associations, for example: `commentable_type: "'Product'|'Review'"`|
 |namespace         |`:schema`|string\|symbol|The typescript namespace to contain generated types|
 |schema_type       |`:interface`|`:interface`\|`:type`|Whether to generate typescript definitions as types or interfaces. Interfaces are recommended since they are easier to extend|
 |indent|`:tab`|`:tab`\|`:space`|Indentation using tabs or spaces|
