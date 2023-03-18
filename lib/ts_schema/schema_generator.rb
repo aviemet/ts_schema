@@ -1,22 +1,23 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 
 module TsSchema
   class SchemaGenerator
-    attr_accessor :config
-    attr_accessor :models
+    attr_accessor :config, :models
 
     def initialize(config = nil)
       @config = config || TsSchema::Configuration.new
       @config.field_overrides = @config.field_overrides.stringify_keys
       @config.field_type_overrides = @config.field_type_overrides.stringify_keys
-			@models = []
+      @models = []
 
       Rails.application.eager_load!
-			@config.parent_classes.each do |parent|
-				@models.concat(get_subclasses(parent.to_s.constantize))
-			end
+      @config.parent_classes.each do |parent|
+        @models.concat(get_subclasses(parent.to_s.constantize))
+      end
       unless @config.additional_models.empty?
-        @models.concat(@config.additional_models.map do |m| 
+        @models.concat(@config.additional_models.map do |m|
           m.to_s.constantize
         end)
       end
@@ -41,9 +42,9 @@ module TsSchema
       @models.each do |model|
         columns = map_column_types(model)
         columns.concat(map_associations(model)) if @config.include_associated
-        
+
         type_template += <<~TYPESCRIPT
-          #{@config.schema_type} #{model.model_name.param_key.camelize} #{@config.schema_type.to_sym == :type ? "= " : ""}{
+          #{@config.schema_type} #{model.model_name.param_key.camelize} #{@config.schema_type.to_sym == :type ? '= ' : ''}{
           #{columns.map { |column| "#{indent_as_str}#{column_name_cased(column[:name])}: #{column[:ts_type]};" }.join("\n")}
           }\n
         TYPESCRIPT
@@ -63,9 +64,7 @@ module TsSchema
       content = generate
       return if File.exist?(path) && File.read(path) == content
 
-      File.open(path, 'w') do |f|
-        f.write content
-      end
+      File.write(path, content)
     end
 
     def map_column_types(model)
@@ -74,19 +73,19 @@ module TsSchema
         next if @config.field_overrides[column_name] == :omit
 
         type_override = config.field_type_overrides[column_name]
-                 
-        type = type_override ? type_override : @types[column.type.to_s] || @config.default_type
+
+        type = type_override || @types[column.type.to_s] || @config.default_type
         name = map_name(column.name)
         null = column.null
         null = true if @config.field_overrides[name]&.to_s == "optional"
 
-        if(enum = model.defined_enums[name])
+        if (enum = model.defined_enums[name])
           type = enum.keys.map { |k| "'#{k}'" }.join("|")
         end
 
         {
-          name: "#{name}#{"?" if null }",
-          ts_type: "#{type}#{" | null" if null}"
+          name: "#{name}#{'?' if null}",
+          ts_type: "#{type}#{' | null' if @config.export_nulls && null}"
         }
       }.compact
     end
@@ -105,13 +104,12 @@ module TsSchema
 
     def map_associations(model)
       model.reflect_on_all_associations.reject(&:polymorphic?).map do |association|
-        case
-        when association.has_one? || association.belongs_to?
+        if association.has_one? || association.belongs_to?
           {
             name: "#{association.name}?",
             ts_type: association.class_name.constantize.model_name.param_key.camelize
           }
-        when association.collection?
+        elsif association.collection?
           {
             name: "#{association.name}?",
             ts_type: "#{association.class_name.constantize.model_name.param_key.camelize}[]"
