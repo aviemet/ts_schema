@@ -5,24 +5,24 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
     generator = TsSchema::SchemaGenerator.new
     map = generator.map_column_types(Example)
     [
-      {:name=>"id", :ts_type=>"number"},
-      {:name=>"col_string", :ts_type=>"string"},
-      {:name=>"col_text", :ts_type=>"string"},
-      {:name=>"col_integer", :ts_type=>"number"},
-      {:name=>"col_enum", :ts_type=>"'zero'|'one'|'two'"},
-      {:name=>"col_bigint", :ts_type=>"number"},
-      {:name=>"col_float", :ts_type=>"number"},
-      {:name=>"col_decimal", :ts_type=>"number"},
-      {:name=>"col_json?", :ts_type=>"Record<string, any> | null"},
-      {:name=>"col_jsonb?", :ts_type=>"Record<string, any> | null"},
-      {:name=>"col_binary?", :ts_type=>"string | null"},
-      {:name=>"col_boolean?", :ts_type=>"boolean | null"},
-      {:name=>"col_date?", :ts_type=>"string | null"},
-      {:name=>"col_datetime?", :ts_type=>"string | null"},
-      {:name=>"col_timestamp?", :ts_type=>"string | null"},
-      {:name=>"col_inet?", :ts_type=>"string | null"},
-      {:name=>"col_cidr?", :ts_type=>"string | null"},
-      {:name=>"col_macaddr?", :ts_type=>"string | null"},
+      {:name => "id", :ts_type => "number"},
+      {:name => "col_string", :ts_type => "string"},
+      {:name => "col_text", :ts_type => "string"},
+      {:name => "col_integer", :ts_type => "number"},
+      {:name => "col_enum", :ts_type => "'zero'|'one'|'two'"},
+      {:name => "col_bigint", :ts_type => "number"},
+      {:name => "col_float", :ts_type => "number"},
+      {:name => "col_decimal", :ts_type => "number"},
+      {:name => "col_json?", :ts_type => "Record<string, any>"},
+      {:name => "col_jsonb?", :ts_type => "Record<string, any>"},
+      {:name => "col_binary?", :ts_type => "string"},
+      {:name => "col_boolean?", :ts_type => "boolean"},
+      {:name => "col_date?", :ts_type => "string"},
+      {:name => "col_datetime?", :ts_type => "string"},
+      {:name => "col_timestamp?", :ts_type => "string"},
+      {:name => "col_inet?", :ts_type => "string"},
+      {:name => "col_cidr?", :ts_type => "string"},
+      {:name => "col_macaddr?", :ts_type => "string"},
     ].each do |f|
       assert_includes(map, f)
     end
@@ -55,20 +55,20 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
     assert_includes(generator.models.map(&:name), "Base")
   end
 
-	test "it generates schema as type when the option is set" do
+  test "it generates schema as type when the option is set" do
     config = TsSchema::Configuration.new({schema_type: :type})
     generator = TsSchema::SchemaGenerator.new(config)
-		assert_match "type Example = {", generator.generate
-		refute_match "interface Example {", generator.generate
-	end
+    assert_match "type Example = {", generator.generate
+    refute_match "interface Example {", generator.generate
+  end
 
-	test "it outputs a namespace from the option" do
+  test "it outputs a namespace from the option" do
     config = TsSchema::Configuration.new({namespace: "different"})
     generator = TsSchema::SchemaGenerator.new(config)
 
-		assert_match "namespace different", generator.generate
-		refute_match "namespace schema", generator.generate
-	end
+    assert_match "namespace different", generator.generate
+    refute_match "namespace schema", generator.generate
+  end
 
   test "it respects field naming overrides" do
     config = TsSchema::Configuration.new({field_overrides: {
@@ -80,13 +80,13 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
     }})
     generator = TsSchema::SchemaGenerator.new(config)
     map = generator.map_column_types(Override)
-    
-    assert_includes map, {name: "password?", ts_type: "string | null"}
+
+    assert_includes map, {name: "password?", ts_type: "string"}
     refute_includes map, {name: "encrypted_password", ts_type: "string"}
-    refute_includes map, {name: "omit?", ts_type: "string | null"}
-    refute_includes map, {name: "deep?", ts_type: "string | null"}
-    refute_includes map, {name: "nesting?", ts_type: "string | null"}
-    assert_includes map, {name: "level?", ts_type: "string | null"}
+    refute_includes map, {name: "omit?", ts_type: "string"}
+    refute_includes map, {name: "deep?", ts_type: "string"}
+    refute_includes map, {name: "nesting?", ts_type: "string"}
+    assert_includes map, {name: "level?", ts_type: "string"}
   end
 
   test "it respect field name type overrides" do
@@ -96,6 +96,6 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
     generator = TsSchema::SchemaGenerator.new(config)
     map = generator.map_column_types(Override)
 
-    assert_includes map, {name: "deep?", ts_type: "'option1'|'option2' | null"}
+    assert_includes map, {name: "deep?", ts_type: "'option1'|'option2'"}
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "lib/ts_schema/version"
 
 Gem::Specification.new do |spec|
@@ -8,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.homepage    = "https://github.com/aviemet"
   spec.summary     = "Generates typescript definitions from ActiveRecord"
   spec.description = ""
-	spec.license     = "MIT"
+  spec.license     = "MIT"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/aviemet/ts_schema"
@@ -20,5 +22,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "rails", ">= 6.0.0"
-  spec.add_dependency(%q<railties>, [">= 4"])
+  spec.add_dependency('railties', [">= 4"])
 end

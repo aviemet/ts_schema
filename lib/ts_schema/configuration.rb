@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "pathname"
 
 module TsSchema
@@ -6,8 +8,9 @@ module TsSchema
       case: :camel,
       output: -> { Rails.root.join('app', 'assets', 'javascripts', 'schema.d.ts') },
       auto_generate: true,
-      types: ->{ YAML.load_file(File.expand_path(__dir__) + '/conversion_table.yml').to_h },
+      types: ->{ YAML.load_file("#{File.expand_path(__dir__)}/conversion_table.yml").to_h },
       custom_types: {},
+      export_nulls: false,
       default_type: :string,
       include_associated: true,
       parent_classes: ["ApplicationRecord"],
@@ -21,13 +24,14 @@ module TsSchema
       schema_type: :interface,
       indent: :tab,
       spaces: 2,
-    }
+    }.freeze
 
     attr_accessor(*DEFAULTS.keys)
 
     def initialize(attributes = nil)
       assign(DEFAULTS)
       return unless attributes
+
       assign(attributes)
     end
 
@@ -35,12 +39,11 @@ module TsSchema
       if !attributes && !block
         raise "Provide attributes or block"
       end
+
       tap(&block) if block
-      if attributes
-        attributes.each do |attribute, value|
-          value = value.call if value.is_a?(Proc)
-          send(:"#{attribute}=", value)
-        end
+      attributes&.each do |attribute, value|
+        value = value.call if value.is_a?(Proc)
+        send(:"#{attribute}=", value)
       end
       self
     end
