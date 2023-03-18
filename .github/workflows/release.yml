@@ -13,9 +13,9 @@ jobs:
         id: release
         with:
           release-type: ruby
-          package-name: release-please-demo
+          package-name: ts_schema
           bump-minor-pre-major: true
-          version-file: "lib/release/please/demo/version.rb"
+          version-file: "lib/ts_schema/version.rb"
 
       # Checkout code if release was created
       - uses: actions/checkout@v2
