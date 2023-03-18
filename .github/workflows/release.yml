@@ -18,7 +18,6 @@ jobs:
         with:
           release-type: ruby
           package-name: ts_schema
-          bump-minor-pre-major: true
           version-file: "lib/ts_schema/version.rb"
 
       # Checkout code if release was created
