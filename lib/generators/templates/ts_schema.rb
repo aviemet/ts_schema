@@ -1,18 +1,17 @@
+# frozen_string_literal: true
+
 TsSchema.setup do |config|
   # Case options for field names: camel|snake|pascal
   #
   # config.case = :camel
 
-
   # Customize output path and file name
   #
   # config.output = Rails.root.join('app', 'assets', 'javascripts', 'schema.d.ts')
 
-
   # Whether to generate the schema file after running migrations
   #
   # config.auto_generate = true
-
 
   # Add custom type mappings or overrides (as strings or symbols)
   #
@@ -37,19 +36,20 @@ TsSchema.setup do |config|
   #   macaddr:                string
   #
   # config.custom_types = {
-  #   
+  #
   # }
 
+  # Include null type for optional fields
+  #
+  # export_nulls = false
 
   # Default type for unrecognized types
   #
   # config.default_type = :string
 
-
   # Whether to generate types for associated models
   #
   # config.include_associated = true
-
 
   # Parent classes of models to generate (as strings or symbols)
   # Only classes inheriting from those in this list will have types generated
@@ -58,14 +58,12 @@ TsSchema.setup do |config|
   #	  "ApplicationRecord",
   # ]
 
-
-  # Additional models to generate schema from, such as those added by other gems 
+  # Additional models to generate schema from, such as those added by other gems
   #  which don't have a model file. (as strings or symbols)
   #
   # config.additional_models = [
-  #	
+  #
   # ]
-
 
   # Ignore certain fields, omitting them from the generated schema: :optional|(string)|false
   # Key is the name of the field to override options for.
@@ -88,21 +86,17 @@ TsSchema.setup do |config|
 
   # }
 
-
   # Namespace for generated types
   #
   # config.namespace = :schema
-
 
   # Output schema as types or interfaces: type|interface
   #
   # config.schema_type = :interface
 
-
   # Indentation options: tab|space
   #
   # config.indent = :tab
-
 
   # If indent is spaces, specify how many
   #
