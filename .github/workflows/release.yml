@@ -19,6 +19,7 @@ jobs:
           release-type: ruby
           package-name: ts_schema
           version-file: "lib/ts_schema/version.rb"
+          token: ${{secrets.ACTIONS_TOKEN}}
 
       # Checkout code if release was created
       - uses: actions/checkout@v2
