@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/aviemet/ts_schema/compare/v1.0.0...v1.0.1) (2023-03-31)
+
+
+### Bug Fixes
+
+* Adds helpful error message upon failure ([32d3b8b](https://github.com/aviemet/ts_schema/commit/32d3b8ba65f4b43c45b0987da663a81a3e799363))
+
 ## 1.0.0 (2023-03-18)
 
 
