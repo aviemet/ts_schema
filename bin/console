@@ -7,6 +7,13 @@ require "ts_schema"
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
 
+require_relative "../test/dummy/config/environment"
+
+def generator(options)
+  config = TsSchema::Configuration.new(options)
+  TsSchema::SchemaGenerator.new(config)
+end
+
 # (If you use this, don't forget to add pry to your Gemfile!)
 require "pry"
 Pry.start

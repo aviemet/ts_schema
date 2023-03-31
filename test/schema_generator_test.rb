@@ -98,4 +98,10 @@ class SchemaGeneratorTest < ActiveSupport::TestCase
 
     assert_includes map, {name: "deep?", ts_type: "'option1'|'option2'"}
   end
+
+  test "it outputs types in alphabetical order" do
+    generator = TsSchema::SchemaGenerator.new
+    assert_equal generator.models.first.model_name, "Deep"
+    assert_equal generator.models.last.model_name, "Two"
+  end
 end

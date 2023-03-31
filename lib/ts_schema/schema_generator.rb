@@ -115,6 +115,12 @@ module TsSchema
             ts_type: "#{association.class_name.constantize.model_name.param_key.camelize}[]"
           }
         end
+      rescue StandardError => e
+        print "#{model} has an incorrect association: #{association.name}\n"
+        print "Association details:\n"
+        print JSON.parse(association.to_json)
+        print "\n\n"
+        print e
       end
     end
 
