@@ -12,6 +12,7 @@ end
 
 namespace :db do
   def auto_generate_and_save_file
+    Rails.application.reloader.reload!
     TsSchema.output_file if TsSchema.configuration.auto_generate
   end
 
