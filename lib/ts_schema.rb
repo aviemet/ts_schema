@@ -17,7 +17,7 @@ module TsSchema
     end
 
     def generate
-      if ActiveRecord::Base.connection.migration_context.needs_migration?
+      if check_migrations!
         puts "Aborting: There are pending migrations"
       else
         SchemaGenerator.new(@configuration).generate
@@ -25,11 +25,19 @@ module TsSchema
     end
 
     def output_file
-      if ActiveRecord::Base.connection.migration_context.needs_migration?
+      if check_migrations!
         puts "Aborting: There are pending migrations"
       else
         SchemaGenerator.new(@configuration).output_file
       end
+    end
+
+    private
+
+    def check_migrations!
+      return ActiveRecord::Base.connection.migration_context.needs_migration? if Rails.version < '7'
+
+      ActiveRecord::Migration.check_all_pending!
     end
   end
 end
